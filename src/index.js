@@ -1,48 +1,29 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from 'react'; import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
-import todoApp from './reducers/reducers';
-import { TodoApp } from './App';
+import todoApp from './reducers';
+///import { App } from './App';
 
-/*
-import {
-    addTodo,
-    toggleTodo,
-    setVisibilityFilter,
-    VisibilityFilters
-} from './actions/actions';
+///store.subscribe(() => console.log(store.getState()));
+/// define a middleware that logs all of the actions fired
+const actionLogger = store => next => action => {
+	console.log(action);
+	next(action);
+};
 
-const store = createStore(todoApp);
-// Log the initial state
-console.log(store.getState());
+const store = createStore(
+	todoApp,
+	applyMiddleware(actionLogger) 
+	/*window.__REDUX_DEVTOOLS_EXTENSIONS__ && window.__REDUX_DEVTOOLS_EXTENSIONS__()*/
+);
 
-/// Every time the state changes, log it
-/// Note that subscribe() returns a function for unregistering the listener
-const unsubscribe = store.subscribe(() => console.log(store.getState()));
-
-/// Dispatch actions
-store.dispatch(addTodo('Learn about actions'));
-store.dispatch(addTodo('Learn about reducers'));
-store.dispatch(addTodo('Learn about store'));
-
-store.dispatch(toggleTodo(0));
-store.dispatch(toggleTodo(1));
-
-store.dispatch(setVisibilityFilter(VisibilityFilters.SHOW_COMPLETED));
-
-/// Unsubsuscribe now that we are done
-unsubscribe();
-*/
-
-const store = createStore(todoApp);
 
 ReactDOM.render(
     <Provider store={store}>
-        <TodoApp />
+        <App />
     </Provider>,
     document.getElementById('root'));
 
